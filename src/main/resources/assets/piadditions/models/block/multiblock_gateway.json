@@ -1,0 +1,41 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+		"top": "piadditions:blocks/multiblock_gateway_top",
+		"side": "piadditions:blocks/multiblock_gateway_side",
+		"particle": "piadditions:blocks/multiblock_gateway_top",
+		"all": "piadditions:blocks/multiblock_gateway_top"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 2, 16],
+			"faces": {
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#top"
+				},
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#top"
+				},
+				"north": {
+					"uv": [0, 0, 16, 1],
+					"texture": "#side"
+				},
+				"south": {
+					"uv": [0, 0, 16, 1],
+					"texture": "#side"
+				},
+				"west": {
+					"uv": [0, 0, 16, 1],
+					"texture": "#side"
+				},
+				"east": {
+					"uv": [0, 0, 16, 1],
+					"texture": "#side"
+				}
+			}
+		}
+	]
+}

@@ -1,6 +1,8 @@
 package com.Pirhotau.PiAdditions.Blocks;
 
+import com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier.BlockBarrier;
 import com.Pirhotau.PiAdditions.Blocks.Decoration.Grid.BlockGrid;
+import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockGateway.BlockMultiblockGateway;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -15,6 +17,13 @@ public final class BlocksRegisterHandler {
 	/* List of all declared blocks */
 	@GameRegistry.ObjectHolder("piadditions:grid")
 	public static PBlock GRID = new BlockGrid();
+	
+	@GameRegistry.ObjectHolder("piadditions:barrier")
+	public static PBlock BARRIER = new BlockBarrier();
+	
+	@GameRegistry.ObjectHolder("piadditions:multiblockgateway")
+	public static PBlock MULTIBLOCK_GATEWAY = new BlockMultiblockGateway();
+	
 
 	/**
 	 * Register blocks
@@ -25,6 +34,8 @@ public final class BlocksRegisterHandler {
 		IForgeRegistry<Block> registry = event.getRegistry();
 		
 		GRID.register(registry);
+		BARRIER.register(registry);
+		MULTIBLOCK_GATEWAY.register(registry);
 	}
 	
 	/**
@@ -36,6 +47,8 @@ public final class BlocksRegisterHandler {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		
 		GRID.registerItemBlock(registry);
+		BARRIER.registerItemBlock(registry);
+		MULTIBLOCK_GATEWAY.registerItemBlock(registry);
 	}
 
 }

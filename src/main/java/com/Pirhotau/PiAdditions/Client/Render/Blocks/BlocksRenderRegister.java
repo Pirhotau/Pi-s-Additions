@@ -18,5 +18,7 @@ public final class BlocksRenderRegister {
 	@SubscribeEvent
 	public static void registerBlocksRenderer(ModelRegistryEvent event) {
 		BlocksRegisterHandler.GRID.registerModel();
+		BlocksRegisterHandler.BARRIER.registerModel();
+		BlocksRegisterHandler.MULTIBLOCK_GATEWAY.registerModel();
 	}
 }

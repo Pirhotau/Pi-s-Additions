@@ -1,0 +1,14 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "piadditions:multiblock_gateway"
+	},
+	"variants": {
+		"normal": {"model": "piadditions:multiblock_gateway"},
+		"inventory": {"model": "piadditions:multiblock_gateway"},
+		"facing=east": {"model": "piadditions:multiblock_gateway", "y": 90},
+		"facing=south": {"model": "piadditions:multiblock_gateway", "y": 180},
+		"facing=west": {"model": "piadditions:multiblock_gateway", "y": 270},
+		"facing=north": {"model": "piadditions:multiblock_gateway"}
+	}
+}

@@ -25,19 +25,16 @@ public class Main {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
-		System.out.println("----------------- PreInit ---------------");
 	    proxy.preInit(e);
 	}
 	    
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
-		System.out.println("----------------- Init ---------------");
 	    proxy.init(e);        
 	}
 	    
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
-		System.out.println("----------------- PostInit ---------------");
 		proxy.postInit(e);
 	}
 }

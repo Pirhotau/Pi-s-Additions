@@ -1,6 +1,6 @@
-package com.Pirhotau.PiAdditions.Blocks.Decoration.Grid;
+package com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier;
 
-import com.Pirhotau.PiAdditions.Blocks.PBlockTileEntity;
+import com.Pirhotau.PiAdditions.Blocks.PBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -19,12 +19,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
-
+public class BlockBarrier extends PBlock {
+	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
-	public BlockGrid() {
-		super("grid");
+	public BlockBarrier() {
+		super("barrier");
 		this.setDefaultState(this.blockState.getBaseState()
 				.withProperty(FACING, EnumFacing.NORTH)
 				);
@@ -52,7 +52,7 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
+		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()));
 	}
 	
 	/*
@@ -67,7 +67,7 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+		return BlockRenderLayer.SOLID;
 	}
 	
 	public boolean isFullCube(IBlockState state)
@@ -81,7 +81,23 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	}
 	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-	     return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+		switch(state.getValue(FACING)) {
+		case NORTH: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
+		}
+		case SOUTH: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
+		}
+		case WEST: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
+		}
+		case EAST: {
+			return new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		}
+		default:
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		}
+	    
 	}
 	
 	@Override
@@ -100,19 +116,5 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
-	}
-	
-	
-	/*
-	 * ------------- Tile entity
-	 */
-	@Override
-	public Class<TileEntityGrid> getTileEntityClass() {
-		return TileEntityGrid.class;
-	}
-
-	@Override
-	public TileEntityGrid createTileEntity(World world, IBlockState state) {
-		return new TileEntityGrid();
 	}
 }

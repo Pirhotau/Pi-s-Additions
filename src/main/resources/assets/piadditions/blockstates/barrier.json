@@ -1,0 +1,14 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "piadditions:barrier"
+	},
+	"variants": {
+		"normal": {"model": "piadditions:barrier"},
+		"inventory": {"model": "piadditions:barrier"},
+		"facing=east": {"model": "piadditions:barrier", "y": 90},
+		"facing=south": {"model": "piadditions:barrier", "y": 180},
+		"facing=west": {"model": "piadditions:barrier", "y": 270},
+		"facing=north": {"model": "piadditions:barrier"}
+	}
+}
