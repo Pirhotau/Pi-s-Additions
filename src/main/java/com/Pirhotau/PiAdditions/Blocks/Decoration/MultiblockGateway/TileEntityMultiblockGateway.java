@@ -20,15 +20,11 @@ public class TileEntityMultiblockGateway extends TileEntity {
 	
 	public void setFacing(EnumFacing facing) {
 		this.facing = facing;
-		
-		//this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
 		this.markDirty();
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		System.out.println("WriteToNBT - " + this.facing.toString());
-		
 		nbt.setInteger("facing", this.facing.getHorizontalIndex());
 		return super.writeToNBT(nbt);
 	}
@@ -36,9 +32,6 @@ public class TileEntityMultiblockGateway extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
-		
-		System.out.println("ReadFromNBT - " + this.facing.toString());
-		
 		super.readFromNBT(nbt);
 	}
 	
@@ -53,42 +46,22 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		notifyBlockUpdate();
 	}
 	
-	
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		System.out.println("GetUpdateTag - " + this.facing.toString());
-		
 		return writeToNBT(new NBTTagCompound());
 	}
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		System.out.println("GetUpdatePacket - " + this.facing.toString());
-		
 		return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdateTag());
 	}
-
-	/*
-	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
-		super.handleUpdateTag(tag);
-		
-		
-		readFromNBT(tag);
-		System.out.println("HandleUpdateTag - " + this.facing.toString());
-	}*/
 	
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.getNbtCompound());
 		notifyBlockUpdate();
-		
-		System.out.println("OnDataPacket - " + this.facing.toString());
 	}
 	
-
-	
-
 	
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
