@@ -7,6 +7,7 @@ import com.Pirhotau.PiAdditions.Blocks.PBlockTileEntity;
 import com.Pirhotau.PiAdditions.Items.ItemsRegisterHandler;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -92,7 +93,7 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 			if(hand == EnumHand.MAIN_HAND) {				
 				if(playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.BARRIER)) {
 					if(!this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
-						playerIn.setHeldItem(hand, playerIn.getHeldItemMainhand().splitStack(1));
+						playerIn.getHeldItemMainhand().shrink(1);
 						this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), true);
 					}
 					return true;
@@ -101,6 +102,7 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 				} else return false;
 			} else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
 				if(this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
+					System.out.println("Remove barrier");
 					this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), false);
 					
 					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
@@ -160,6 +162,20 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 		}
 	}
 	
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		this.releaseItems(worldIn, pos);
+		super.breakBlock(worldIn, pos, state);
+	}
+	
+	private void releaseItems(World worldIn, BlockPos pos) {
+		int number = ((TileEntityMultiblockGateway) this.getTileEntity(worldIn, pos)).getBarrierNumber();
+		if(number != 0) {
+			EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, number));
+			worldIn.spawnEntity(item);
+		}
+		
+	}
 	
 	
 	/*

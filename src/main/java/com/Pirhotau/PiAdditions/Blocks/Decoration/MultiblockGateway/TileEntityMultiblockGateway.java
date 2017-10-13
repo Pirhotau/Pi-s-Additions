@@ -60,6 +60,17 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		this.markDirty();
 	}
 	
+	public int getBarrierNumber() {
+		int number = 0;
+		
+		if(barrierNorth) number ++;
+		if(barrierSouth) number++;
+		if(barrierEast) number++;
+		if(barrierWest) number++;
+		
+		return number;
+	}
+	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("gridFacing", this.gridFacing.getHorizontalIndex());
