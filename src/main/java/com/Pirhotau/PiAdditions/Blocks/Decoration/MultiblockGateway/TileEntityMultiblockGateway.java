@@ -12,26 +12,71 @@ import net.minecraft.world.World;
 
 public class TileEntityMultiblockGateway extends TileEntity {
 	
-	public EnumFacing facing = EnumFacing.NORTH;
+	public EnumFacing gridFacing = EnumFacing.NORTH;
+	public boolean barrierNorth = false;
+	public boolean barrierSouth = false;
+	public boolean barrierEast = false;
+	public boolean barrierWest = false;	
 
 	public EnumFacing getFacing() {
-		return this.facing;
+		return this.gridFacing;
+	}
+	
+	public boolean getBarrier(EnumFacing facing) {
+		switch(facing) {
+		case NORTH: return this.barrierNorth;
+		case SOUTH: return this.barrierSouth;
+		case EAST: return this.barrierEast;
+		case WEST: return this.barrierWest;
+		default: return false;
+		}
 	}
 	
 	public void setFacing(EnumFacing facing) {
-		this.facing = facing;
+		this.gridFacing = facing;
+		this.markDirty();
+	}
+	
+	public void setBarrier(EnumFacing facing, boolean exists) {
+		switch(facing) {
+		case NORTH: {
+			this.barrierNorth = exists;
+			break;
+		}
+		case SOUTH: {
+			this.barrierSouth = exists;
+			break;
+		}
+		case EAST: {
+			this.barrierEast = exists;
+			break;
+		}
+		case WEST: {
+			this.barrierWest = exists;
+			break;
+		}
+		default: break;
+		}
 		this.markDirty();
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("facing", this.facing.getHorizontalIndex());
+		nbt.setInteger("gridFacing", this.gridFacing.getHorizontalIndex());
+		nbt.setBoolean("barrierNorth", this.barrierNorth);
+		nbt.setBoolean("barrierSouth", this.barrierSouth);
+		nbt.setBoolean("barrierEast", this.barrierEast);
+		nbt.setBoolean("barrierWest", this.barrierWest);
 		return super.writeToNBT(nbt);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
+		this.gridFacing = EnumFacing.getHorizontal(nbt.getInteger("gridFacing"));
+		this.barrierNorth = nbt.getBoolean("barrierNorth");
+		this.barrierSouth = nbt.getBoolean("barrierSouth");
+		this.barrierEast = nbt.getBoolean("barrierEast");
+		this.barrierWest = nbt.getBoolean("barrierWest");
 		super.readFromNBT(nbt);
 	}
 	
