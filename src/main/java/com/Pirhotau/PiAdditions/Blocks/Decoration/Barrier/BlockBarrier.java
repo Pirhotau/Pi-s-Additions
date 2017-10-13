@@ -1,6 +1,8 @@
 package com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier;
 
+import com.Pirhotau.PiAdditions.Blocks.BlocksRegisterHandler;
 import com.Pirhotau.PiAdditions.Blocks.PBlock;
+import com.Pirhotau.PiAdditions.Items.ItemsRegisterHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -8,10 +10,13 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -53,6 +58,22 @@ public class BlockBarrier extends PBlock {
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()));
+	}
+	
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(!worldIn.isRemote) {
+			if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
+				this.breakBlock(worldIn, pos, state);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
+				worldIn.spawnEntity(item);
+				worldIn.setBlockToAir(pos);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/*

@@ -107,6 +107,12 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 					
 					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
 					worldIn.spawnEntity(item);
+				} else if(this.getBarrierNumber(worldIn, pos) == 0) {
+					this.breakBlock(worldIn, pos, state);
+					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.MULTIBLOCK_GATEWAY, 1));
+					worldIn.spawnEntity(item);
+					worldIn.setBlockToAir(pos);
+					return true;
 				}
 				return true;
 			}
@@ -134,6 +140,11 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 	public void setBarrier(IBlockAccess world, BlockPos pos, EnumFacing facing, boolean exists) {
 		TileEntityMultiblockGateway te = this.getTileEntity(world, pos);
 		if(te != null) te.setBarrier(facing, exists);
+	}
+	
+	public int getBarrierNumber(IBlockAccess world, BlockPos pos) {
+		TileEntityMultiblockGateway te = this.getTileEntity(world, pos);
+		return te != null ? te.getBarrierNumber() : 0;
 	}
 	
 	@Override
@@ -169,7 +180,7 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 	}
 	
 	private void releaseItems(World worldIn, BlockPos pos) {
-		int number = ((TileEntityMultiblockGateway) this.getTileEntity(worldIn, pos)).getBarrierNumber();
+		int number = this.getBarrierNumber(worldIn, pos);
 		if(number != 0) {
 			EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, number));
 			worldIn.spawnEntity(item);
