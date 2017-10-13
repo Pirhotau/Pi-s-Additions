@@ -2,6 +2,7 @@ package com.Pirhotau.PiAdditions.Blocks;
 
 import com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier.BlockBarrier;
 import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockGateway.BlockMultiblockGateway;
+import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockLadder.BlockMultiblockLadder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -20,6 +21,9 @@ public final class BlocksRegisterHandler {
 	@GameRegistry.ObjectHolder("piadditions:multiblockgateway")
 	public static PBlock MULTIBLOCK_GATEWAY = new BlockMultiblockGateway();
 	
+	@GameRegistry.ObjectHolder("piadditions:multiblockladder")
+	public static PBlock MULTIBLOCK_LADDER = new BlockMultiblockLadder();
+	
 
 	/**
 	 * Register blocks
@@ -31,6 +35,7 @@ public final class BlocksRegisterHandler {
 		
 		BARRIER.register(registry);
 		MULTIBLOCK_GATEWAY.register(registry);
+		MULTIBLOCK_LADDER.register(registry);
 	}
 	
 	/**
@@ -43,6 +48,7 @@ public final class BlocksRegisterHandler {
 		
 		BARRIER.registerItemBlock(registry);
 		MULTIBLOCK_GATEWAY.registerItemBlock(registry);
+		MULTIBLOCK_LADDER.registerItemBlock(registry);
 	}
 
 }

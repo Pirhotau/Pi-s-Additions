@@ -1,4 +1,5 @@
 itemGroup.piadditions=Pi's Additions
 tile.barrier.name=Barrier
 tile.multiblock_gateway.name=Gateway
+tile.multiblock_ladder.name=Ladder
 item.wrench.name=Wrench

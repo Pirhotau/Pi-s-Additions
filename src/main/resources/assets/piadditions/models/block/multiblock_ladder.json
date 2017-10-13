@@ -1,0 +1,82 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+		"ladder": "piadditions:blocks/multiblock_ladder",
+		"particle":"piadditions:blocks/multiblock_ladder",
+		"all":"piadditions:blocks/multiblock_ladder"
+    },
+    "elements": [
+        {
+            "from": [3.5, 1.75, 14.25],
+			"to": [12.5, 2.25, 15.75],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		},
+		{
+            "from": [3.5, 5.75, 14.25],
+			"to": [12.5, 6.25, 15.75],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		},
+		{
+            "from": [3.5, 9.75, 14.25],
+			"to": [12.5, 10.25, 15.75],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		},
+		{
+            "from": [3.5, 13.75, 14.25],
+			"to": [12.5, 14.25, 15.75],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		},
+		{
+            "from": [3, 0, 14],
+			"to": [3.5, 16, 16],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		},
+		{
+            "from": [12.5, 0, 14],
+			"to": [13, 16, 16],
+			"faces": {
+				"up": {"texture": "#ladder"},
+                "down": {"texture": "#ladder"},
+                "west": {"texture": "#ladder"},
+                "east": {"texture": "#ladder"},
+                "north": {"texture": "#ladder"},
+                "south": {"texture": "#ladder"}
+			}
+		}
+    ]
+}

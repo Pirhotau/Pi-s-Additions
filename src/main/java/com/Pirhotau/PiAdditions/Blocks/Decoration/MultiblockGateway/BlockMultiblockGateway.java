@@ -102,7 +102,6 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 				} else return false;
 			} else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
 				if(this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
-					System.out.println("Remove barrier");
 					this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), false);
 					
 					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
