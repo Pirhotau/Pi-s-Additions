@@ -19,6 +19,8 @@ public final class BlocksRenderRegister {
 	public static void registerBlocksRenderer(ModelRegistryEvent event) {
 		BlocksRegisterHandler.BARRIER.registerModel();
 		BlocksRegisterHandler.MULTIBLOCK_GATEWAY.registerModel();
+		
+		BlocksRegisterHandler.LADDER_PROTECTION.registerModel();
 		BlocksRegisterHandler.MULTIBLOCK_LADDER.registerModel();
 	}
 }

@@ -98,7 +98,7 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 					}
 					return true;
 				} else if(playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
-					return this.rotateBlock(worldIn, pos, facing);
+					return this.rotateBlock(worldIn, pos, EnumFacing.DOWN);
 				} else return false;
 			} else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
 				if(this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {

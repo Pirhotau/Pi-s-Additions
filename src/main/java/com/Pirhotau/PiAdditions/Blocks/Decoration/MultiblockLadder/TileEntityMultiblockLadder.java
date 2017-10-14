@@ -11,9 +11,14 @@ import net.minecraft.world.World;
 
 public class TileEntityMultiblockLadder extends TileEntity {
 	public EnumFacing ladderFacing = EnumFacing.NORTH;
+	public boolean ladderProtection = false;
 	
 	public EnumFacing getFacing() {
 		return this.ladderFacing;
+	}
+	
+	public boolean getLadderProtection() {
+		return this.ladderProtection;
 	}
 	
 	public void setFacing(EnumFacing facing) {
@@ -21,15 +26,22 @@ public class TileEntityMultiblockLadder extends TileEntity {
 		this.markDirty();
 	}
 	
+	public void setLadderProtection(boolean exists) {
+		this.ladderProtection = exists;
+		this.markDirty();
+	}
+	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("ladderFacing", this.ladderFacing.getHorizontalIndex());
+		nbt.setBoolean("ladderProtection", this.ladderProtection);
 		return super.writeToNBT(nbt);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		this.ladderFacing= EnumFacing.getHorizontal(nbt.getInteger("ladderFacing"));
+		this.ladderFacing = EnumFacing.getHorizontal(nbt.getInteger("ladderFacing"));
+		this.ladderProtection = nbt.getBoolean("ladderProtection");
 		super.readFromNBT(nbt);
 	}
 	
