@@ -4,3 +4,5 @@ tile.multiblock_gateway.name=Gateway
 tile.ladder_protection.name=Ladder protection
 tile.multiblock_ladder.name=Ladder
 item.wrench.name=Wrench
+item.iron_plate.name=Iron plate
+item.iron_tube.name=Iron tube

@@ -19,5 +19,7 @@ public final class ItemsRenderRegister {
 	@SubscribeEvent
 	public static void registerItemRenderer(ModelRegistryEvent event) {
 		ItemsRegisterHandler.WRENCH.registerModel();
+		ItemsRegisterHandler.IRON_PLATE.registerModel();
+		ItemsRegisterHandler.IRON_TUBE.registerModel();
 	}
 }

@@ -1,5 +1,7 @@
 package com.Pirhotau.PiAdditions.Items;
 
+import com.Pirhotau.PiAdditions.Items.IronPlate.ItemIronPlate;
+import com.Pirhotau.PiAdditions.Items.IronTube.ItemIronTube;
 import com.Pirhotau.PiAdditions.Items.Wrench.ItemWrench;
 
 import net.minecraft.item.Item;
@@ -16,6 +18,12 @@ public final class ItemsRegisterHandler {
 	@GameRegistry.ObjectHolder("piadditions:wrench")
 	public static PItem WRENCH = new ItemWrench();
 	
+	@GameRegistry.ObjectHolder("piadditions:iron_tube")
+	public static PItem IRON_TUBE = new ItemIronTube();
+	
+	@GameRegistry.ObjectHolder("piadditions:iron_plate")
+	public static PItem IRON_PLATE = new ItemIronPlate();
+	
 	/**
 	 * Register items
 	 * 
@@ -26,5 +34,7 @@ public final class ItemsRegisterHandler {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		
 		WRENCH.register(registry);
+		IRON_TUBE.register(registry);
+		IRON_PLATE.register(registry);
 	}
 }

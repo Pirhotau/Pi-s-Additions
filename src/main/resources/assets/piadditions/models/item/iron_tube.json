@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "piadditions:items/iron_tube"
+    }
+}
