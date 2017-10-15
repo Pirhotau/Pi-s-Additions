@@ -89,36 +89,37 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		
 		if(!worldIn.isRemote) {
-			if(hand == EnumHand.MAIN_HAND) {				
-				if(playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.BARRIER)) {
-					if(!this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
-						playerIn.getHeldItemMainhand().shrink(1);
-						this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), true);
-					}
-					return true;
-				} else if(playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
-					return this.rotateBlock(worldIn, pos, EnumFacing.DOWN);
-				} else return false;
-			} else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
-				if(this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
-					this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), false);
-					
-					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
-					worldIn.spawnEntity(item);
-				} else if(this.getBarrierNumber(worldIn, pos) == 0) {
-					this.breakBlock(worldIn, pos, state);
-					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.MULTIBLOCK_GATEWAY, 1));
-					worldIn.spawnEntity(item);
-					worldIn.setBlockToAir(pos);
-					return true;
-				}
+			// Tries to place the barrier
+			if(!playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.BARRIER) && !this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
+				if(!playerIn.isCreative()) playerIn.getHeldItemMainhand().shrink(1);
+				this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), true);
 				return true;
 			}
-			
-			else return false;
+			// Rotates the block
+			else if(!playerIn.isSneaking() && hand == EnumHand.MAIN_HAND && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
+				this.rotateBlock(worldIn, pos, EnumFacing.DOWN);
+				return true;
+			}
+			// Tries to remove the barrier
+			else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH && this.getBarrier(worldIn, pos, playerIn.getHorizontalFacing())) {
+				this.setBarrier(worldIn, pos, playerIn.getHorizontalFacing(), false);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
+				worldIn.spawnEntity(item);
+				return true;
+			}
+			// Tries to remove the grid
+			else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH && this.getBarrierNumber(worldIn, pos) == 0) {
+				this.breakBlock(worldIn, pos, state);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.MULTIBLOCK_GATEWAY, 1));
+				worldIn.spawnEntity(item);
+				worldIn.setBlockToAir(pos);
+				return true;
+			}
 		}
-		return false;
+		
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 	
 	public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
@@ -214,6 +215,9 @@ public class BlockMultiblockGateway extends PBlockTileEntity<TileEntityMultibloc
 	}
 	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		if(source.getBlockState(pos).getBlock() != BlocksRegisterHandler.MULTIBLOCK_GATEWAY) {
+			return NULL_AABB;
+		}
 	     return new AxisAlignedBB(0.0D, 0.0D, 0D, 1.0D, 0.125D, 1.0D);
 	}
 	

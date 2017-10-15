@@ -6,7 +6,6 @@ import com.Pirhotau.PiAdditions.Blocks.BlocksRegisterHandler;
 import com.Pirhotau.PiAdditions.Blocks.PBlock;
 import com.Pirhotau.PiAdditions.Items.ItemsRegisterHandler;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -15,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -26,6 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class BlockLadderProtection extends PBlock {
 
@@ -35,7 +37,6 @@ public class BlockLadderProtection extends PBlock {
 	public static final AxisAlignedBB AABB_LADDER_PROTECTION_SOUTH = new AxisAlignedBB(0.0D,	0.0D, 	0.0D, 		1.0D, 	1.0D, 	0.125D);
 	public static final AxisAlignedBB AABB_LADDER_PROTECTION_EAST = new AxisAlignedBB (0.0D,	0.0D, 	0.0D,	 	0.125D, 1.0D, 	1.0D);
 	public static final AxisAlignedBB AABB_LADDER_PROTECTION_WEST = new AxisAlignedBB (0.875D,	0.0D, 	0.0D, 		1.0D, 	1.0D, 	1.0D);
-	
 	
 	public BlockLadderProtection() {
 		super("ladder_protection");
@@ -149,6 +150,11 @@ public class BlockLadderProtection extends PBlock {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
+	}
+	
+	@Override
+	public void registerItemBlock(IForgeRegistry<Item> registry) {
+		registry.register(BlocksRegisterHandler.ITEMBLOCK_LADDER_PROTECTION);
 	}
 	
 }

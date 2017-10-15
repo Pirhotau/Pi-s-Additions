@@ -28,6 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class BlockMultiblockLadder extends PBlockTileEntity<TileEntityMultiblockLadder> {
 	
@@ -77,38 +78,46 @@ public class BlockMultiblockLadder extends PBlockTileEntity<TileEntityMultiblock
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!worldIn.isRemote) {
-			if(hand == EnumHand.MAIN_HAND) {
-				if(playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.LADDER_PROTECTION)) {
-					if(!this.getLadderProtection(worldIn, pos)) {
-						playerIn.getHeldItemMainhand().shrink(1);
-						this.setLadderProtection(worldIn, pos, true);
-						return true;
-					} else return false;
-				} else if(playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.MULTIBLOCK_LADDER) && this.getLadderProtection(worldIn, pos)) {
-					//TODO : Add the capability to place a ladder with a right click
-					return true;
-				} else if(playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
-					return this.rotateBlock(worldIn, pos, EnumFacing.DOWN);
-				} else return false;
-			} else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
-				if(this.getLadderProtection(worldIn, pos)) {
-					this.setLadderProtection(worldIn, pos, false);
-					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.LADDER_PROTECTION, 1));
-					worldIn.spawnEntity(item);
-					return true;
-				} else {
-					this.breakBlock(worldIn, pos, state);
-					worldIn.setBlockToAir(pos);
-					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.MULTIBLOCK_LADDER, 1));
-					worldIn.spawnEntity(item);
-					return true;
-				}
-			} else return false;
-		} else return false;
+		if(!worldIn.isRemote && worldIn.getBlockState(pos).getBlock() == BlocksRegisterHandler.MULTIBLOCK_LADDER) {
+			// Tries to place the ladder protection
+			if(!playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.LADDER_PROTECTION) && !this.getLadderProtection(worldIn, pos)) {
+				if(!playerIn.isCreative()) playerIn.getHeldItemMainhand().shrink(1);
+				this.setLadderProtection(worldIn, pos, true);
+				return true;
+			}
+			// Tries to place a ladder protection on next ladder
+			else if (!playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.LADDER_PROTECTION) && this.getLadderProtection(worldIn, pos)) {
+				this.placeLadderProtectionOnTop(playerIn, worldIn, pos, 1);
+			}
+			// Tries to add a ladder on the top
+			else if(!playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(BlocksRegisterHandler.MULTIBLOCK_LADDER)) {
+				this.placeLadderOnTop(playerIn, worldIn, pos, 1);
+				return true;
+			}
+			// Rotates the block
+			else if(!playerIn.isSneaking() && hand == EnumHand.MAIN_HAND && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
+				this.rotateBlock(worldIn, pos, EnumFacing.DOWN);
+				return true;
+			}
+			// Tries to remove the ladder protection
+			else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH && this.getLadderProtection(worldIn, pos)) {
+				this.setLadderProtection(worldIn, pos, false);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.LADDER_PROTECTION, 1));
+				worldIn.spawnEntity(item);
+				return true;
+			}
+			// Tries to remove the ladder
+			else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH && !this.getLadderProtection(worldIn, pos)) {
+				this.breakBlock(worldIn, pos, state);
+				worldIn.setBlockToAir(pos);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.MULTIBLOCK_LADDER, 1));
+				worldIn.spawnEntity(item);
+				return true;
+			}
+		}
+		
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
-	
-	
 	
 	public EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
 		TileEntityMultiblockLadder te = this.getTileEntity(world, pos);
@@ -137,6 +146,43 @@ public class BlockMultiblockLadder extends PBlockTileEntity<TileEntityMultiblock
 		return true;
 	}
 	
+	public boolean placeLadderOnTop(EntityPlayer playerIn, World worldIn, BlockPos pos, int attempts) {
+		// First, tries to place a ladder on the top of the current block
+		if(this.canPlaceBlockAt(worldIn, pos.up())) {
+			if(!playerIn.isCreative()) playerIn.getHeldItemMainhand().shrink(1);
+			
+			IBlockState state = this.getDefaultState();
+			worldIn.setBlockState(pos.up(), state);
+			
+			this.setFacing(worldIn, pos.up(), this.getFacing(worldIn, pos));
+			
+		} 
+		// Else, try to propagate the method.
+		else if(worldIn.getBlockState(pos.up()).getBlock() == BlocksRegisterHandler.MULTIBLOCK_LADDER && attempts < 8) {
+			return this.placeLadderOnTop(playerIn, worldIn, pos.up(), attempts + 1);
+		}
+		
+		return false;
+	}
+	
+	public boolean placeLadderProtectionOnTop(EntityPlayer playerIn, World worldIn, BlockPos pos, int attempts) {
+		if(worldIn.getBlockState(pos.up()).getBlock() == BlocksRegisterHandler.MULTIBLOCK_LADDER && attempts < 8) {
+			// if already have a ladder protection, tries to place on top block
+			if(this.getLadderProtection(worldIn, pos.up())) {
+				this.placeLadderProtectionOnTop(playerIn, worldIn, pos.up(), attempts + 1);
+			} 
+			// else doesnt have a ladder protection place it
+			else {
+				if(!playerIn.isCreative()) playerIn.getHeldItemMainhand().shrink(1);
+				this.setLadderProtection(worldIn, pos.up(), true);
+			}
+		}
+		
+		
+		
+		return false;
+	}
+	
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
@@ -162,6 +208,10 @@ public class BlockMultiblockLadder extends PBlockTileEntity<TileEntityMultiblock
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		if(source.getBlockState(pos).getBlock() != BlocksRegisterHandler.MULTIBLOCK_LADDER) {
+			return NULL_AABB;
+		}
+		
 		if(!this.getLadderProtection(source, pos)) { 
 			if(this.getFacing(source, pos) == EnumFacing.NORTH) {
 				return AABB_LADDER_NORTH;
@@ -186,7 +236,10 @@ public class BlockMultiblockLadder extends PBlockTileEntity<TileEntityMultiblock
 	}
 	
 	private void releaseItems(World worldIn, BlockPos pos) {
-		//TODO
+		if(this.getLadderProtection(worldIn, pos)) {
+			EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.LADDER_PROTECTION, 1));
+			worldIn.spawnEntity(item);
+		}
 	}
 	
 	@Override

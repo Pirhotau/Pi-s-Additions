@@ -1,12 +1,15 @@
 package com.Pirhotau.PiAdditions.Blocks;
 
 import com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier.BlockBarrier;
+import com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier.ItemBlockBarrier;
 import com.Pirhotau.PiAdditions.Blocks.Decoration.LadderProtection.BlockLadderProtection;
+import com.Pirhotau.PiAdditions.Blocks.Decoration.LadderProtection.ItemBlockLadderProtection;
 import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockGateway.BlockMultiblockGateway;
 import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockLadder.BlockMultiblockLadder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -28,6 +31,11 @@ public final class BlocksRegisterHandler {
 	@GameRegistry.ObjectHolder("piadditions:ladder_protection")
 	public static PBlock LADDER_PROTECTION = new BlockLadderProtection();
 	
+	
+	
+	public static ItemBlock ITEMBLOCK_BARRIER;
+	public static ItemBlock ITEMBLOCK_LADDER_PROTECTION;
+	
 
 	/**
 	 * Register blocks
@@ -42,6 +50,8 @@ public final class BlocksRegisterHandler {
 		
 		LADDER_PROTECTION.register(registry);
 		MULTIBLOCK_LADDER.register(registry);
+		
+		initializeItemBlocks();
 	}
 	
 	/**
@@ -57,6 +67,11 @@ public final class BlocksRegisterHandler {
 		
 		LADDER_PROTECTION.registerItemBlock(registry);
 		MULTIBLOCK_LADDER.registerItemBlock(registry);
+	}
+	
+	public static void initializeItemBlocks() {
+		ITEMBLOCK_BARRIER = new ItemBlockBarrier(BARRIER);
+		ITEMBLOCK_LADDER_PROTECTION = new ItemBlockLadderProtection(LADDER_PROTECTION);
 	}
 
 }
