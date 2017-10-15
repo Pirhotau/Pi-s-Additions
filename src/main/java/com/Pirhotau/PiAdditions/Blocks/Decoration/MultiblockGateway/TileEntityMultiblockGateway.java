@@ -1,5 +1,7 @@
 package com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockGateway;
 
+import com.Pirhotau.PiAdditions.Blocks.Decoration.MultiblockGateway.BlockMultiblockGateway.CustomEnumFacingLadder;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -16,7 +18,8 @@ public class TileEntityMultiblockGateway extends TileEntity {
 	public boolean barrierNorth = false;
 	public boolean barrierSouth = false;
 	public boolean barrierEast = false;
-	public boolean barrierWest = false;	
+	public boolean barrierWest = false;
+	public CustomEnumFacingLadder ladder = CustomEnumFacingLadder.NONE;
 
 	public EnumFacing getFacing() {
 		return this.gridFacing;
@@ -30,6 +33,10 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		case WEST: return this.barrierWest;
 		default: return false;
 		}
+	}
+	
+	public CustomEnumFacingLadder getLadder() {
+		return this.ladder;
 	}
 	
 	public void setFacing(EnumFacing facing) {
@@ -60,6 +67,11 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		this.markDirty();
 	}
 	
+	public void setLadder(CustomEnumFacingLadder ladder) {
+		this.ladder = ladder;
+		this.markDirty();
+	}
+	
 	public int getBarrierNumber() {
 		int number = 0;
 		
@@ -78,6 +90,7 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		nbt.setBoolean("barrierSouth", this.barrierSouth);
 		nbt.setBoolean("barrierEast", this.barrierEast);
 		nbt.setBoolean("barrierWest", this.barrierWest);
+		nbt.setInteger("ladder", this.ladder.getIndex());
 		return super.writeToNBT(nbt);
 	}
 
@@ -88,6 +101,7 @@ public class TileEntityMultiblockGateway extends TileEntity {
 		this.barrierSouth = nbt.getBoolean("barrierSouth");
 		this.barrierEast = nbt.getBoolean("barrierEast");
 		this.barrierWest = nbt.getBoolean("barrierWest");
+		this.ladder = CustomEnumFacingLadder.getValue(nbt.getInteger("ladder"));
 		super.readFromNBT(nbt);
 	}
 	

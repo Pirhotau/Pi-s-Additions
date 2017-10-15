@@ -25,6 +25,13 @@
 		"barrier_west": {
 			"true": {"submodel": "piadditions:barrier", "y": 270},
 			"false": {}
+		},
+		"ladder": {
+			"none": {},
+			"north": {"submodel": "piadditions:multiblock_ladder"},
+			"south": {"submodel": "piadditions:multiblock_ladder", "y": 180},
+			"east": {"submodel": "piadditions:multiblock_ladder", "y": 90},
+			"west": {"submodel": "piadditions:multiblock_ladder", "y": 270}
 		}
 	}
 }
