@@ -3,6 +3,7 @@ package com.Pirhotau.PiAdditions.Blocks;
 import com.Pirhotau.PiAdditions.Crafting.PCreativeTab;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,6 +33,8 @@ public abstract class PBlock extends Block {
 		setResistance(resistance);
 		setRegistryName(name);
 		
+		setSoundType(SoundType.METAL);
+		
 	}
 	
 	
@@ -46,7 +49,7 @@ public abstract class PBlock extends Block {
 	 * @param name
 	 */
 	public PBlock(String name) {
-		this(Material.IRON, name, 2.0f, 10.0f, PCreativeTab.INSTANCE);
+		this(Material.GROUND, name, 2.0f, 10.0f, PCreativeTab.INSTANCE);
 	}
 	
 	/**

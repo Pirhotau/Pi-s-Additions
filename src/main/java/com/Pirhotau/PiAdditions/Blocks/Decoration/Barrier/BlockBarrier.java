@@ -1,6 +1,8 @@
-package com.Pirhotau.PiAdditions.Blocks.Decoration.Grid;
+package com.Pirhotau.PiAdditions.Blocks.Decoration.Barrier;
 
-import com.Pirhotau.PiAdditions.Blocks.PBlockTileEntity;
+import com.Pirhotau.PiAdditions.Blocks.BlocksRegisterHandler;
+import com.Pirhotau.PiAdditions.Blocks.PBlock;
+import com.Pirhotau.PiAdditions.Items.ItemsRegisterHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -8,23 +10,28 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
-public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
-
+public class BlockBarrier extends PBlock {
+	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
-	public BlockGrid() {
-		super("grid");
+	public BlockBarrier() {
+		super("barrier");
 		this.setDefaultState(this.blockState.getBaseState()
 				.withProperty(FACING, EnumFacing.NORTH)
 				);
@@ -52,7 +59,23 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
+		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()));
+	}
+	
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(!worldIn.isRemote) {
+			if(playerIn.isSneaking() && playerIn.getHeldItemMainhand().getItem() == ItemsRegisterHandler.WRENCH) {
+				this.breakBlock(worldIn, pos, state);
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BlocksRegisterHandler.BARRIER, 1));
+				worldIn.spawnEntity(item);
+				worldIn.setBlockToAir(pos);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/*
@@ -67,7 +90,7 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+		return BlockRenderLayer.SOLID;
 	}
 	
 	public boolean isFullCube(IBlockState state)
@@ -81,7 +104,23 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 	}
 	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-	     return new AxisAlignedBB(0.0D, 0.0D, 0D, 1.0D, 0.125D, 1.0D);
+		switch(state.getValue(FACING)) {
+		case NORTH: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
+		}
+		case SOUTH: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D);
+		}
+		case WEST: {
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.125D, 1.0D, 1.0D);
+		}
+		case EAST: {
+			return new AxisAlignedBB(0.875D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		}
+		default:
+			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		}
+	    
 	}
 	
 	@Override
@@ -102,17 +141,8 @@ public class BlockGrid extends PBlockTileEntity<TileEntityGrid> {
 		return EnumBlockRenderType.MODEL;
 	}
 	
-	
-	/*
-	 * ------------- Tile entity
-	 */
 	@Override
-	public Class<TileEntityGrid> getTileEntityClass() {
-		return TileEntityGrid.class;
-	}
-
-	@Override
-	public TileEntityGrid createTileEntity(World world, IBlockState state) {
-		return new TileEntityGrid();
+	public void registerItemBlock(IForgeRegistry<Item> registry) {
+		registry.register(BlocksRegisterHandler.ITEMBLOCK_BARRIER);
 	}
 }

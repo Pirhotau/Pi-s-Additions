@@ -1,10 +1,10 @@
 {
     "parent": "block/cube_all",
     "textures": {
-		"top": "piadditions:blocks/grid_top",
-		"side": "piadditions:blocks/grid_side",
-		"particle": "piadditions:blocks/grid_top",
-		"all": "piadditions:blocks/grid_top"
+		"top": "piadditions:blocks/multiblock_gateway_top",
+		"side": "piadditions:blocks/multiblock_gateway_side",
+		"particle": "piadditions:blocks/multiblock_gateway_top",
+		"all": "piadditions:blocks/multiblock_gateway_top"
 	},
 	"elements": [
 		{

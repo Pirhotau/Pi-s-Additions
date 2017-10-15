@@ -1,0 +1,37 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+	},
+	"variants": {
+		"inventory": {"model": "piadditions:multiblock_gateway"},
+		"grid_facing": {
+			"north": {"submodel": "piadditions:multiblock_gateway"},
+			"south": {"submodel": "piadditions:multiblock_gateway", "y": 180},
+			"east": {"submodel": "piadditions:multiblock_gateway", "y": 90},
+			"west": {"submodel": "piadditions:multiblock_gateway", "y": 270}
+		},
+		"barrier_north": {
+			"true": {"submodel": "piadditions:barrier"},
+			"false": {}
+		},
+		"barrier_south": {
+			"true": {"submodel": "piadditions:barrier", "y": 180},
+			"false": {}
+		},
+		"barrier_east": {
+			"true": {"submodel": "piadditions:barrier", "y": 90},
+			"false": {}
+		},
+		"barrier_west": {
+			"true": {"submodel": "piadditions:barrier", "y": 270},
+			"false": {}
+		},
+		"ladder": {
+			"none": {},
+			"north": {"submodel": "piadditions:multiblock_ladder"},
+			"south": {"submodel": "piadditions:multiblock_ladder", "y": 180},
+			"east": {"submodel": "piadditions:multiblock_ladder", "y": 90},
+			"west": {"submodel": "piadditions:multiblock_ladder", "y": 270}
+		}
+	}
+}

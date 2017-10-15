@@ -1,0 +1,19 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "piadditions:multiblock_ladder"
+	},
+	"variants": {
+		"inventory": {"model": "piadditions:multiblock_ladder"},
+		"ladder_facing": {
+			"north": {},
+			"south": {"y": 180},
+			"east": {"y": 90},
+			"west": {"y": 270}
+		},
+		"ladder_protection": {
+			"true": {"submodel": "piadditions:ladder_protection"},
+			"false": {}
+		}
+	}
+}

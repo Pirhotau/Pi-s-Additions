@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"III"
+	],
+	"key": {
+		"I": {"item": "minecraft:heavy_weighted_pressure_plate"}
+	},
+	"result": {
+		"item": "piadditions:iron_plate",
+		"count": 6
+	}
+}

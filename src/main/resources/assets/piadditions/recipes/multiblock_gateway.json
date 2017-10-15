@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"IBI",
+		"BBB",
+		"IBI"
+	],
+	"key": {
+		"I": {"item": "minecraft:iron_ingot"},
+		"B": {"item": "minecraft:iron_bars"}
+	},
+	"result": {
+		"item": "piadditions:multiblock_gateway",
+		"count": 5
+	}
+}
